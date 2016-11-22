@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { clock, reset } from './actions';
 import BitModule from './utils/Bit';
 
 const Bit = BitModule();
@@ -30,6 +31,10 @@ function pad(num: number | string, len: number = 2): string {
 }
 
 class App extends Component {
+  handleClock() {
+    this.props.dispatch(clock());
+  }
+
   render() {
     const { cpu: { register, flag, port, pc, rom } } = this.props;
 
@@ -40,6 +45,11 @@ class App extends Component {
     });
 
     return <div>
+      <h2>TD4.js</h2>
+      <div>
+        <button onClick={this.handleClock.bind(this)}>Clock</button>
+        <button>Reset</button>
+      </div>
       <h3>Register</h3>
       <ul>
         <li>A: <code>{dump(register.a)}</code></li>

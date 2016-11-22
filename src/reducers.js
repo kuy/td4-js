@@ -2,6 +2,7 @@
 
 import { combineReducers } from 'redux';
 import { CLOCK } from './actions';
+import * as processor from './processor';
 import type { Action } from './actions';
 
 type Register = ArrayBuffer;
@@ -30,9 +31,10 @@ type CpuState = {
   rom: ProgramMemory,
 };
 
-const a = new ArrayBuffer(1);
-const v = new DataView(a);
-v.setUint8(0, 15);
+const rom = new ArrayBuffer(ROM_SIZE);
+const view = new Uint8Array(rom);
+view[0] = 0b00110010;
+view[1] = 0b00000011;
 
 const initial = {
   cpu: {
@@ -46,14 +48,14 @@ const initial = {
       output: new ArrayBuffer(1),
     },
     pc: 0,
-    rom: new ArrayBuffer(ROM_SIZE),
+    rom,
   },
 };
 
 function cpu(state: CpuState = initial.cpu, { type, payload }: Action): CpuState {
   switch (type) {
     case CLOCK:
-      return { ...state, behavior: payload };
+      return processor.execute(state);
   }
   return state;
 }

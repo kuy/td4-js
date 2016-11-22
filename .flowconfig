@@ -1,0 +1,9 @@
+[ignore]
+.*/fbjs/.*
+
+[include]
+
+[libs]
+
+[version]
+0.35.0

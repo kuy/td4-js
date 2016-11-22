@@ -1,7 +1,7 @@
 // @flow
 
 import { combineReducers } from 'redux';
-import { CLOCK } from './actions';
+import { CLOCK, RESET } from './actions';
 import * as processor from './processor';
 import { ROM_SIZE } from './constants';
 import type { Action } from './actions';
@@ -36,8 +36,8 @@ const view = new Uint8Array(rom);
 view[0] = 0b00111001;
 view[1] = 0b00000111;
 
-const initial = {
-  cpu: {
+function genInitialCpuState(): CpuState {
+  return {
     register: {
       a: new ArrayBuffer(1),
       b: new ArrayBuffer(1),
@@ -49,13 +49,19 @@ const initial = {
     },
     pc: 0,
     rom,
-  },
+  };
+}
+
+const initial = {
+  cpu: genInitialCpuState(),
 };
 
 function cpu(state: CpuState = initial.cpu, { type, payload }: Action): CpuState {
   switch (type) {
     case CLOCK:
       return processor.execute(state);
+    case RESET:
+      return genInitialCpuState();
   }
   return state;
 }

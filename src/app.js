@@ -22,6 +22,10 @@ class App extends Component {
     this.props.dispatch(clock());
   }
 
+  handleReset() {
+    this.props.dispatch(reset());
+  }
+
   render() {
     const { cpu: { register, flag, port, pc, rom } } = this.props;
 
@@ -35,7 +39,7 @@ class App extends Component {
       <h2>TD4.js</h2>
       <div>
         <button onClick={this.handleClock.bind(this)}>Clock</button>
-        <button>Reset</button>
+        <button onClick={this.handleReset.bind(this)}>Reset</button>
       </div>
       <h3>Register</h3>
       <ul>

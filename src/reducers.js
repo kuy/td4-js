@@ -35,6 +35,7 @@ const rom = new ArrayBuffer(ROM_SIZE);
 const view = new Uint8Array(rom);
 view[0] = 0b00111001;
 view[1] = 0b00000111;
+view[2] = 0b01110000;
 
 function genInitialCpuState(): CpuState {
   return {

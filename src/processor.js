@@ -1,20 +1,11 @@
+// @flow
+
 import BitModule from './utils/Bit';
+import { MAX_NUM } from './constants';
+import { dump, setOneByte, getOneByte } from './utils/binary';
+import type { CpuState } from './reducers';
 
 const Bit = BitModule();
-
-function dump(oneByte: number, bit: number = 8): string {
-  return Bit.dump(oneByte, [32 - bit, bit]).split(', ')[1];
-}
-
-function setOneByte(buffer: ArrayBuffer, n: number): void {
-  const view = new Uint8Array(buffer);
-  view[0] = Bit.split8(n, [8]);
-}
-
-function getOneByte(buffer: ArrayBuffer): number {
-  const view = new Uint8Array(buffer);
-  return view[0];
-}
 
 const CARRY_BIT = 0b00000001;
 function carry(flag: ArrayBuffer, on: bool): ArrayBuffer {
@@ -28,7 +19,6 @@ function carry(flag: ArrayBuffer, on: bool): ArrayBuffer {
   return newFlag;
 }
 
-const MAX_NUM = 16;
 export function execute(current: CpuState): CpuState {
   const state = { ...current };
 

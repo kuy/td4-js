@@ -3,6 +3,7 @@
 import { combineReducers } from 'redux';
 import { CLOCK } from './actions';
 import * as processor from './processor';
+import { ROM_SIZE } from './constants';
 import type { Action } from './actions';
 
 type Register = ArrayBuffer;
@@ -11,13 +12,12 @@ type Port = ArrayBuffer;
 type ProgramCounter = number;
 type ProgramMemory = ArrayBuffer;
 
-const ROM_SIZE = 16;
 
-type State = {
+export type State = {
   cpu: CpuState,
 };
 
-type CpuState = {
+export type CpuState = {
   register: {
     a: Register,
     b: Register,
@@ -33,8 +33,8 @@ type CpuState = {
 
 const rom = new ArrayBuffer(ROM_SIZE);
 const view = new Uint8Array(rom);
-view[0] = 0b00110010;
-view[1] = 0b00000011;
+view[0] = 0b00111001;
+view[1] = 0b00000111;
 
 const initial = {
   cpu: {

@@ -1,5 +1,6 @@
 {
   "name": "td4-js",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/kuy/td4-js.git"

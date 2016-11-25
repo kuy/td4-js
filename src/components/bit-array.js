@@ -6,9 +6,10 @@ import { setOneByte, getOneBit } from '../utils/binary';
 
 const Bit = BitModule();
 
-type onToggleFn = (value: number, nth: number) => void;
+type onToggleFn = (name: ?string, nth: number) => void;
 
 type Props = {
+  name?: string,
   data: ArrayBuffer | number,
   size: number,
   onToggle: onToggleFn,
@@ -39,6 +40,8 @@ function style(state: bool) {
     textAlign: 'center',
     fontFamily: 'monospace',
     fontSize: '14px',
+    userSelect: 'none',
+    cursor: 'pointer',
   };
 
   if (state) {
@@ -56,9 +59,15 @@ export default class BitArray extends Component {
   props: Props;
 
   static defaultProps: {
+    name?: string,
     data: ArrayBuffer | number,
     size: number,
     onToggle: onToggleFn
+  }
+
+  handleClick(nth: number) {
+    const { name, onToggle } = this.props;
+    onToggle(name, nth);
   }
 
   render() {
@@ -74,8 +83,8 @@ export default class BitArray extends Component {
     list.reverse();
 
     return <ul style={wrapperStyle}>
-      {list.map(i => getOneBit(data, i)).map(b =>
-        <li style={style(b)}>
+      {list.map(i => ([getOneBit(data, i), i])).map(([b, nth]) =>
+        <li style={style(b)} onClick={e => this.handleClick(nth)}>
           {b ? '1' : '0'}
         </li>
       )}

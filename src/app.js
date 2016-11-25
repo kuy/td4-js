@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { clock, reset } from './actions';
+import { clock, reset, toggle } from './actions';
 import { dump } from './utils/binary';
 import BitArray from './components/bit-array';
 
@@ -27,14 +27,22 @@ class App extends Component {
     this.props.dispatch(reset());
   }
 
+  handleToggle(name, nth) {
+    this.props.dispatch(toggle({ name, nth }));
+  }
+
   render() {
     const { cpu: { register, flag, port, pc, rom } } = this.props;
+
+    const handle = {
+      onToggle: this.handleToggle.bind(this),
+    };
 
     const romDump = [];
     const romView = new Uint8Array(rom);
     romView.forEach((oneByte, i) => {
       romDump.push(
-        <li><BitArray data={oneByte} /> {pad(i)}</li>
+        <li><BitArray name={`rom.${i}`} data={oneByte} {...handle} /> {pad(i)}</li>
       );
     });
 
@@ -46,16 +54,16 @@ class App extends Component {
       </div>
       <h3>Register</h3>
       <ul>
-        <li><BitArray data={register.a} size={4} /> A</li>
-        <li><BitArray data={register.b} size={4} /> B</li>
+        <li><BitArray name="register.a" data={register.a} size={4} {...handle} /> A</li>
+        <li><BitArray name="register.b" data={register.b} size={4} {...handle} /> B</li>
       </ul>
       <h3>
-        Flag: <BitArray data={flag} size={4} />
+        Flag: <BitArray name="flag" data={flag} size={4} {...handle} />
       </h3>
       <h3>Port</h3>
       <ul>
-        <li><BitArray data={port.input} size={4} /> Input</li>
-        <li><BitArray data={port.output} size={4} /> Output</li>
+        <li><BitArray name="port.input" data={port.input} size={4} {...handle} /> Input</li>
+        <li><BitArray name="port.output" data={port.output} size={4} {...handle} /> Output</li>
       </ul>
       <h3>Program Counter: {pc}</h3>
       <h3>ROM</h3>

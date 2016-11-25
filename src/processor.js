@@ -14,7 +14,7 @@ function carry(flag: ArrayBuffer, on: bool): ArrayBuffer {
   if (on) {
     view[0] = view[0] | CARRY_BIT;
   } else {
-    view[0] = view[0] & Bit.reverse8(CARRY_BIT);
+    view[0] = view[0] & (~CARRY_BIT);
   }
   return newFlag;
 }
